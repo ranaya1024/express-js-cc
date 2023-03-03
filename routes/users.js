@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../utils/logger');
+
+router.use(logger);
+// logger for an specific route
+//router.get('/', logger, ....)
 
 const userList = [
   { name: 'Cartman', id: '123' },
@@ -8,15 +13,26 @@ const userList = [
 
 // Static routes at the top
 router.get('/', (req, res) => {
-  res.send('User List');
+  console.log('Query url parameter: ?name=', req.query.name);
+  res.send('**User List Path**');
 });
 
 router.post('/', (req, res) => {
+  const firstName = req.body.firstName;
+
+  if (firstName) {
+    userList.push({ name: firstName, id: firstName });
+    res.redirect(`/users/${firstName}`);
+  } else {
+    d;
+    console.error('Error');
+    res.render('users/new', { firstName });
+  }
   res.send('Create User');
 });
 
 router.get('/new', (req, res) => {
-  res.send('User New Form');
+  res.render('users/new', { firstName: 'Ruben' });
 });
 
 // Dinamyc with param routes at the bottom
@@ -26,9 +42,8 @@ router
   .get((req, res) => {
     const userId = req.params.id;
     if (req.user) {
-      console.info('User Found', req.user);
+      res.send(`Get User with ID ${userId}`);
     }
-    res.send(`Get User with ID ${userId}`);
   })
   .put((req, res) => {
     const userId = req.params.id;
