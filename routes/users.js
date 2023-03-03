@@ -35,7 +35,7 @@ router.get('/new', (req, res) => {
   res.render('users/new', { firstName: 'Ruben' });
 });
 
-// Dinamyc with param routes at the bottom
+// Dynamic with param routes at the bottom
 // So /new won't be considered an /:id
 router
   .route('/:id')
